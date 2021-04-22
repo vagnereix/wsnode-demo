@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Socket.io demo</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.min.js"></script>
+  </head>
+  <body>
+    <button id="join">Join websocket</button>
+    <button id="send-message">Send message</button>
+
+    <script type="text/javascript">
+      let socket;
+
+      document.getElementById("join").addEventListener("click", function () {
+        if (!socket) {
+          socket = new io("http://localhost:3333");
+        }
+
+        socket.on("received", (message) => {
+          console.log(`Message received ${message}`);
+        });
+      });
+
+      document
+        .getElementById("send-message")
+        .addEventListener("click", function () {
+          if (!socket) {
+            return;
+          }
+
+          socket.emit("message", `Hello world ${Math.random}`);
+        });
+    </script>
+  </body>
+</html>
+
+<!-- Socket.io não é uma bala de prata, você não precisa utilizar ele para manter
+Dasboards atualizados, você pode utilizar o react-query ou SWR da vercel para
+esse caso de uso. Socket.io vai ser mais utilizado para chats e jogos. Socket.io
+mantém uma conexão entre o servidor e o cliente, onde ambos podem trocar
+mensagens assíncronas. -->
